@@ -5,21 +5,41 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 )
 
+func pid_max() int{
+	file, err := os.Open("/proc/sys/kernel/pid_max")
+	// Control that the file was open with no error or exiting
+	if err != nil {
+		panic(err)
+	}
+	scanner := bufio.NewScanner(file)
+
+	val := ""      	
+	if (scanner.Scan()){
+		val := scanner.Text()
+		fmt.Println("Max system pid : " + val)
+	}
+	valret, _ := strconv.Atoi(val)
+	return valret
+}
+
 
 func pid(){
-	file, err := os.Open("/proc/")
+	
+	pid_max()
+	//fmt.Println(pid_max())
+
+//	file, err := os.Open("/proc/")
 }
 
 
 func main(){
-	fmt.println(pid())
+//	fmt.Println(pid())
+	pid()
 }
 
 // Function to open the memory file
