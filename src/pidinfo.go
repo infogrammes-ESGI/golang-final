@@ -10,6 +10,14 @@ import (
 	"strings"
 )
 
+type Pid struct {
+	name string
+	number int
+	cwd string
+	exe string
+	memory int
+}
+// gets max pid for the system
 func pid_max() int{
 	file, err := os.Open("/proc/sys/kernel/pid_max")
 	// Control that the file was open with no error or exiting
@@ -17,13 +25,9 @@ func pid_max() int{
 		panic(err)
 	}
 	scanner := bufio.NewScanner(file)
-
-	val := ""      	
-	if (scanner.Scan()){
-		val := scanner.Text()
-		fmt.Println("Max system pid : " + val)
-	}
-	valret, _ := strconv.Atoi(val)
+	scanner.Scan()
+	fmt.Println("Max system pid : " + scanner.Text())
+	valret, _ := strconv.Atoi(scanner.Text())
 	return valret
 }
 
