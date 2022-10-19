@@ -17,24 +17,34 @@ type Pid struct {
 	exe string
 	memory int
 }
-// gets max pid for the system
-func pid_max() int{
-	file, err := os.Open("/proc/sys/kernel/pid_max")
-	// Control that the file was open with no error or exiting
+
+func getProcess() []int {
+
+	dir, err : = os.Open("/proc")
 	if err != nil {
 		panic(err)
 	}
-	scanner := bufio.NewScanner(file)
-	scanner.Scan()
-	fmt.Println("Max system pid : " + scanner.Text())
-	valret, _ := strconv.Atoi(scanner.Text())
-	return valret
+	
+	defer dir.Close()
+
+	
+	onlydir := int[]
+
+	for {
+		all, err = dir.Readdirnames(0) // list all ( 0 ) files in the directory.
+
+		for _, name := range all {
+			fmt.Println(name)
+			onlydir = append(onlydir, name)
+		}
+		
+
+	}
 }
 
 
 func pid(){
 	
-	pid_max()
 	//fmt.Println(pid_max())
 
 //	file, err := os.Open("/proc/")
@@ -42,8 +52,7 @@ func pid(){
 
 
 func main(){
-//	fmt.Println(pid())
-	pid()
+	fmt.Println(pid())
 }
 
 // Function to open the memory file
