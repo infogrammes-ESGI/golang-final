@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"io"
 	"strconv"
 	"strings"
 )
@@ -29,16 +30,31 @@ func getProcess() []int {
 
 	
 	onlydir := int[]
-
 	for {
 		all, err = dir.Readdirnames(0) // list all ( 0 ) files in the directory.
-
-		for _, name := range all {
-			fmt.Println(name)
-			onlydir = append(onlydir, name)
+		// error occurs when you arrive at the end of the directory content
+		if err == io.EOF {
+			break
 		}
-		
-
+		if err != nil {
+			panic(err)
+		}
+		// stores in the onlydir array files that are dir
+		for _, name := range all { // Itteration du dossier contenu dans all
+			fmt.Println(name) 
+			
+			fileInfo, err := name.Stat() // donnees sur le directory en question, si erreur alors panic
+			if err != nil{
+				panic(err)
+			}
+			if _, err := strconv.Atoi(name); err == nil { // on ne fait qu'un append si le fichier est un chiffre
+				if fileInfo.IsDir() { // et si c'est un dossier
+					onlydir = append(onlydir, name) // append du name dans only dir
+				} else {
+					continue // sinon on next
+				}
+			}
+		}
 	}
 }
 
