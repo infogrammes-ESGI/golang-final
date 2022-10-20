@@ -9,11 +9,6 @@ import (
 	"strconv"
 )
 
-
-//TODO fonction de boucle pour recuperer les informations processeurs CF structure
-// NE PAS OUBLIER LES LIENS SYMBOLIQUES
-//TODO fonction pour formater les valeurs dans une seule string
-
 func parser(line string) (key string, value string){
 	text := strings.ReplaceAll(line[:len(line)], " ", "")
 	values := strings.Split(text, ":")
@@ -96,17 +91,16 @@ func getProcess() []string {
 	return onlydir
 }
 
-func pid() {
+func pid() []string {
 
 	processList := getProcess()
 
-	fmt.Println(getPidInfo(processList))
+	return getPidInfo(processList)
 
-	//fmt.Println(getProcess())
 
 }
 
 func main() {
-	pid()
-	// fmt.Println(pid())
+	
+	fmt.Println(pid())
 }
