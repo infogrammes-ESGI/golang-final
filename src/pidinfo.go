@@ -1,12 +1,10 @@
 package main
 
 import (
-	//	"bufio"
 	"fmt"
 	"io"
 	"os"
 	"strconv"
-	// "strings"
 )
 
 type Pid struct {
@@ -29,10 +27,9 @@ func getProcess() []string {
 	}
 
 	defer dir.Close()
-
 	var onlydir []string
 	for {
-		all, err := dir.Readdirnames(0) // list all ( 0 ) files in the directory.
+		all, err := dir.Readdirnames(10) // list all ( 0 ) files in the directory.
 		// error occurs when you arrive at the end of the directory content
 		if err == io.EOF {
 			break
@@ -49,7 +46,6 @@ func getProcess() []string {
 			}
 			if _, err := strconv.Atoi(name); err == nil { // on ne fait qu'un append si le fichier contient des chiffre
 				if fileInfo.IsDir() { // et si c'est un dossier
-					fmt.Println(name)
 					onlydir = append(onlydir, name) // append du name dans only dir
 				} else {
 					continue // sinon on next
@@ -57,9 +53,8 @@ func getProcess() []string {
 			}
 		}
 	}
-	// TODO: return le slice
+	return onlydir
 }
-
 func pid() {
 
 	fmt.Println(getProcess())
